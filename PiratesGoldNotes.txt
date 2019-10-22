@@ -1,0 +1,11 @@
+Par chance la table utilisé est ascii
+
+Pour rendre une phrase plus longue, il faut décaler la phrase suivante, sauf que le début la phrase suivante est pointé par un pointeur 
+et si le début de la phrase est décalé, alors la valeur du pointeur doit etre changé, pour se faire il faut noter l'offset de la premiere lettre de 
+la phrase encore non-décalée, puis rechercher ou dans la rom cet offset est écrit et donc la position du pointeur.
+A partir de là, il suffit de modifier le pointeur pour qu'il pointe vers le nouvel offset du début de la phrase.
+
+
+Les phrases se terminent par un octet 00
+
+Les pointeurs des phrases sont stocké a l'offset 1FB19
