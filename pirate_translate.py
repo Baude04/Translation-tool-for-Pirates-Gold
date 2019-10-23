@@ -31,14 +31,26 @@ class Sentence():
         self.file = file
         self.offset = offset
         self.end_offset = offset + len(self.sentence)
-        
+
+    def __fill_sentence_with_space(self):
+        """Fill the sentence with space, including the end character
+        """
+        char_offset = self.offset
+        a = True
+        while a:
+            octet = hex(self.file[char_offset])
+            if octet == "0x0":
+                a = False
+            self.file[char_offset] = ord(' ')
+            char_offset += 1
+    
     @property
     def sentence(self):
         char_offset = self.offset
         a = True
         result = ""
         while a:
-            octet = hex(file[char_offset])
+            octet = hex(self.file[char_offset])
             if octet == "0x0":
                 a = False
             else:
@@ -47,9 +59,10 @@ class Sentence():
         return result
 
     @sentence.setter
-    def sentence(self, sentence):
+    def sentence(self, new_sentence):
         char_offset = self.offset
-        for i in sentence:
+        self.__fill_sentence_with_space()
+        for i in new_sentence:
             if hex(self.file[char_offset]) == "0x0":
                 raise Exception("phrase trop longue")
             self.file[char_offset] = ord(i)
@@ -63,20 +76,30 @@ class Sentence():
         
         self.end_offset = char_offset
 
-file = open("Pirates! Gold (USAtoFR).md", 'rb')
-file = bytearray( file.read())#bytes
-ph = Sentence(file, 0x3eec1)
-print(ph.sentence)
-ph.sentence = input("nvl phrase")
+    def __str__(self):
+        return self.sentence
 
 
-ph2 = Sentence(file, 0x3eec1)
-print("nouvelle_phrase: " + ph2.sentence)
 
-pointeurs = Pointers(file, 0, 10000)
-pter = pointeurs.get_pointer(0x3eec1)
-if pter.offset != 129816:
-    print("error 1")
+
+if __name__ == "__main__":
+    file = open("../Pirates! Gold (USAtoFR).md", 'rb')
+    file = bytearray( file.read())#bytes
+    ph = Sentence(file, 0x3eec1)
+    print(ph.sentence)
+    ph.sentence = input("nvl phrase")
+
+
+    ph = Sentence(file, 0x3eec1)
+    print("nouvelle_phrase: ", ph)
+
+    ph2 = Sentence(file, ph.end_offset+1)
+    print("phrase suivante: ", ph2)
+
+    pointeurs = Pointers(file, 0, 10000)
+    pter = pointeurs.get_pointer(0x3eec1)
+    if pter.offset != 129816:
+        print("error 1")
 
 
 
