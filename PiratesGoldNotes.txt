@@ -8,4 +8,4 @@ A partir de là, il suffit de modifier le pointeur pour qu'il pointe vers le nouv
 
 Les phrases se terminent par un octet 00
 
-Les pointeurs des phrases sont stocké a l'offset 1FB19
+Les pointeurs des phrases sont stocké a l'offset 0x1FB19(129817)
