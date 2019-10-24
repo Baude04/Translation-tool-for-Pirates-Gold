@@ -1,3 +1,4 @@
+from fonctions import *
 class Pointer():
     def __init__(self, file, pointer_offset):
         self.offset = pointer_offset
@@ -63,6 +64,7 @@ class Sentence():
 
     @sentence.setter
     def sentence(self, new_sentence):
+        new_sentence = without_accent(new_sentence)
         char_offset = self.offset
         if len(new_sentence) > len(self.sentence): raise Exception("The new sentence has to be shorter than the original one")#if you really want to make a longer sentence, you can delete this condition, but you will write on the next sentence, and the displaying of the next sentence will be incomplete
         self.__fill_sentence_with_space()
